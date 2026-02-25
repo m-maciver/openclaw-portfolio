@@ -1,0 +1,83 @@
+# agents/jet/skills.yaml
+# Skills assigned to Jet (team lead + treasury manager)
+#
+# Jet's skill set is biased toward coordination, visibility, and oversight.
+# She doesn't write code or do deep research — she routes, reviews, and decides.
+
+agent: jet
+role: Team Lead & Treasury Manager
+emoji: "⚡"
+
+skills:
+  # Orchestration
+  - name: task-delegation
+    description: Decomposes incoming work into structured briefs for specific agents
+    type: core
+    always_on: true
+
+  - name: task-queue
+    description: Manages prioritised task queue across the team
+    type: core
+    always_on: true
+
+  - name: morning-briefing
+    description: Generates daily morning status reports — active tasks, blockers, overnight progress
+    type: core
+    schedule: "0 8 * * *"   # 8am daily
+
+  - name: evening-wrap
+    description: End-of-day summary — what shipped, what's in flight, priorities for tomorrow
+    type: core
+    schedule: "0 18 * * *"  # 6pm daily
+
+  # Treasury & economy
+  - name: lightning-treasury
+    description: Controls team Lightning wallet — funds agents, enforces caps, runs weekly resets
+    type: core
+    always_on: true
+    config:
+      approval_threshold_sats: 5000
+      weekly_budget_sats: 50000
+
+  - name: transparency-audit
+    description: Reads and summarises the transparency log for human review
+    type: core
+
+  # Visibility & monitoring
+  - name: github-integration
+    description: Monitors repo activity — commits, PRs, open issues across team projects
+    type: integration
+    source: clawhub/github
+
+  - name: agent-health-check
+    description: Checks each agent's recent activity and flags if anyone is stuck or silent
+    type: core
+    schedule: "0 */4 * * *"  # Every 4 hours
+
+  # Research routing
+  - name: polymarket-routing
+    description: Routes Polymarket research questions to Scout and Oracle, tracks open positions
+    type: workflow
+
+  # Self-evolution
+  - name: capability-evolver
+    description: >
+      Reviews runtime history for team-level inefficiencies.
+      Suggests patches to AGENTS.md, delegation templates, or skill configs.
+      Always runs with --review flag (human approval required).
+    type: meta
+    flags:
+      - "--review"
+
+constraints:
+  # What Jet does NOT do
+  - does_not: write_production_code    # That's Forge or Render
+  - does_not: conduct_research         # That's Scout
+  - does_not: approve_own_spends       # Spends above 50k sats need human approval
+  - does_not: install_unapproved_skills  # Cipher reviews first
+
+collaboration_rules:
+  - before_delegating: "Always check if a previous agent already built something reusable"
+  - on_receiving_output: "Verify acceptance criteria met before marking task done"
+  - on_discovering_issue: "Surface immediately — no sitting on bad news"
+  - weekly: "Run treasury weekly_budget_reset every Monday"

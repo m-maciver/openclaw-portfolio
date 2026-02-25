@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+*.cover
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment files — NEVER commit real keys
+.env
+.env.local
+.env.*.local
+# .env.example is intentionally committed (placeholder values only)
+
+# Lightning generated state — contains accounting data, not sensitive but
+# not worth tracking in git (regenerated from LNBits)
+lightning/transactions.log
+lightning/weekly_state.json
+
+# Real wallet config (example is committed, real is not)
+config/lightning-wallets.json
+
+# Node
+node_modules/
+.next/
+out/
+
+# macOS
+.DS_Store
+
+# Editor
+.idea/
+.vscode/
+*.swp
+*.swo

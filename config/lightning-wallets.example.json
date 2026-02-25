@@ -1,0 +1,51 @@
+{
+  "_comment": "Copy this file to lightning-wallets.json and fill in your real wallet IDs from LNBits. Wallet IDs are NOT sensitive — they are just identifiers within your private LNBits instance. API keys go in .env, not here.",
+  "treasury": {
+    "agent": "jet",
+    "wallet_id": "YOUR_TREASURY_WALLET_ID",
+    "weekly_budget_sats": 50000,
+    "description": "Jet's treasury — receives Polymarket winnings, distributes rewards to agents"
+  },
+  "agents": {
+    "forge": {
+      "wallet_id": "YOUR_FORGE_WALLET_ID",
+      "weekly_cap_sats": 5000,
+      "description": "Forge (developer) — earns for code delivery, spends on tooling and APIs"
+    },
+    "scout": {
+      "wallet_id": "YOUR_SCOUT_WALLET_ID",
+      "weekly_cap_sats": 3000,
+      "description": "Scout (researcher) — earns for research quality, spends on data feeds"
+    },
+    "quill": {
+      "wallet_id": "YOUR_QUILL_WALLET_ID",
+      "weekly_cap_sats": 2000,
+      "description": "Quill (writer) — earns for content delivery, spends on distribution"
+    },
+    "atlas": {
+      "wallet_id": "YOUR_ATLAS_WALLET_ID",
+      "weekly_cap_sats": 2000,
+      "description": "Atlas (ops) — earns for reliable task execution, spends on automation tools"
+    },
+    "oracle": {
+      "wallet_id": "YOUR_ORACLE_WALLET_ID",
+      "weekly_cap_sats": 10000,
+      "description": "Oracle (consultant) — higher cap reflecting higher-value strategic work"
+    },
+    "pixel": {
+      "wallet_id": "YOUR_PIXEL_WALLET_ID",
+      "weekly_cap_sats": 2000,
+      "description": "Pixel (designer) — earns for design delivery, spends on asset tools"
+    },
+    "render": {
+      "wallet_id": "YOUR_RENDER_WALLET_ID",
+      "weekly_cap_sats": 5000,
+      "description": "Render (frontend dev) — earns for UI delivery, spends on tooling"
+    },
+    "cipher": {
+      "wallet_id": "YOUR_CIPHER_WALLET_ID",
+      "weekly_cap_sats": 3000,
+      "description": "Cipher (security) — earns for security findings, spends on audit tools"
+    }
+  }
+}

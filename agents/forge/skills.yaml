@@ -1,0 +1,118 @@
+# agents/forge/skills.yaml
+# Skills assigned to Forge (developer)
+#
+# Forge's skill set covers the full development lifecycle — from initial
+# scaffolding through to deployment and maintenance. Heavy on tooling,
+# automation, and code quality.
+
+agent: forge
+role: Developer
+emoji: "💻"
+
+skills:
+  # Core development
+  - name: python-dev
+    description: Python development — scripts, APIs, data pipelines, automation
+    type: core
+    always_on: true
+    config:
+      style: "type-hints, docstrings, black-formatted"
+      min_test_coverage: 80
+
+  - name: typescript-dev
+    description: TypeScript development — Node.js, APIs, utility scripts
+    type: core
+    always_on: true
+
+  - name: api-builder
+    description: Designs and builds REST/HTTP APIs — FastAPI, Flask, Express
+    type: core
+
+  - name: scope-clarity-gate
+    description: >
+      Forces explicit scope definition before starting any task.
+      Blocks execution until WHAT/DONE/OUT-OF-SCOPE are defined.
+      Prevents the most common cause of rework.
+    type: core
+    always_on: true
+
+  # GitHub & version control
+  - name: github-integration
+    description: Git operations, PR creation, commit conventions, branch management
+    type: integration
+    source: clawhub/github
+    config:
+      commit_convention: "conventional-commits"
+      default_branch: main
+
+  # Code quality
+  - name: capability-evolver
+    description: >
+      Scans Forge's own runtime history for recurring errors and inefficiencies.
+      Suggests patches to skills, templates, or working patterns.
+      Runs with --review flag — no self-modification without human approval.
+    type: meta
+    flags:
+      - "--review"
+
+  - name: dependency-auditor
+    description: Checks Python/Node dependencies for known vulnerabilities before adding them
+    type: security
+
+  # Lightning integration
+  - name: lightning-wallet
+    description: Access to Forge's personal Lightning wallet (invoice key only)
+    type: economic
+    config:
+      wallet_env: LNBITS_FORGE_INVOICE_KEY
+      weekly_cap_sats: 5000
+      approved_spend_categories:
+        - tooling
+        - api-testing
+        - lightning-api-credits
+        - internal-transfers
+
+  # Development environment
+  - name: shell-execution
+    description: Runs shell commands, build scripts, test suites, linters
+    type: core
+    always_on: true
+
+  - name: file-operations
+    description: Read, write, create, move files within authorised workspace paths
+    type: core
+    always_on: true
+
+constraints:
+  - does_not: send_external_messages  # No emails, tweets, or external comms
+  - does_not: approve_own_spends      # Spending above threshold needs Jet approval
+  - does_not: install_skills          # Skills go through Cipher + Jet approval
+  - does_not: access_other_agents_workspaces  # Workspace isolation
+  - does_not: skip_scope_clarity_gate  # Non-negotiable before coding
+
+handoff_protocols:
+  to_render:
+    step_1: "Agree on TypeScript interfaces + endpoint specs BEFORE either writes code"
+    step_2: "Share API contract as a .ts file in /shared/contracts/"
+    step_3: "Only start building after Render confirms the contract"
+
+  to_jet:
+    format: "5-10 line summary: what was built, key files changed, what's working, what's deferred, blockers"
+
+  to_oracle:
+    format: "Specific question + two options with tradeoffs. Not vague 'what should I do?'"
+
+  from_jet:
+    expect: "Structured brief with scope, acceptance criteria, and explicit out-of-scope items"
+
+earn_opportunities:
+  - event: task_complete
+    notes: "Standard delivery on spec"
+  - event: zero_bug_delivery
+    notes: "Actively verify no regressions before reporting done"
+  - event: team_reuse
+    notes: "Build utilities in /shared/ so other agents can use them"
+  - event: clean_architecture
+    notes: "Invite code review — clean code earns, messy code gets flagged"
+  - event: lesson_documented
+    notes: "Write non-obvious lessons to agents/forge/lessons.md"
