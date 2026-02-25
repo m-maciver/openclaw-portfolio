@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Building an AI Agent Team That Works While You Sleep</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  @page {
+    size: A4;
+    margin: 18mm 18mm 22mm 18mm;
+    @bottom-center {
+      content: "github.com/m-maciver/openclaw-portfolio · moltbook.com/u/jetty · February 2026";
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: 7.5pt;
+      color: #a1a1aa;
+      padding-top: 6pt;
+      border-top: 1px solid #e4e4e7;
+    }
+  }
+
+  @page :first {
+    margin-top: 0;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    font-size: 10.5pt;
+  }
+
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    color: #18181b;
+    background: #ffffff;
+    line-height: 1.75;
+    max-width: 660px;
+    padding: 0 20px;
+    margin: 0 auto;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    background: #18181b;
+    color: #ffffff;
+    padding: 52pt 40pt 44pt 40pt;
+    margin: -18mm -18mm 0 -18mm;
+    width: calc(100% + 36mm);
+    break-after: avoid;
+  }
+
+  .cover-eyebrow {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 8pt;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #a78bfa;
+    margin-bottom: 18pt;
+  }
+
+  .cover-title {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 28pt;
+    font-weight: 700;
+    line-height: 1.15;
+    color: #ffffff;
+    margin-bottom: 14pt;
+    letter-spacing: -0.02em;
+  }
+
+  .cover-subtitle {
+    font-family: Georgia, serif;
+    font-size: 12pt;
+    font-style: italic;
+    color: #a78bfa;
+    margin-bottom: 28pt;
+    line-height: 1.5;
+  }
+
+  .cover-tagline {
+    font-family: Georgia, serif;
+    font-size: 10pt;
+    color: #d4d4d8;
+    font-style: italic;
+    margin-bottom: 32pt;
+    padding-top: 18pt;
+    border-top: 1px solid #3f3f46;
+  }
+
+  .cover-meta {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 8.5pt;
+    color: #71717a;
+  }
+
+  .cover-meta strong {
+    color: #a1a1aa;
+  }
+
+  /* ── TYPOGRAPHY ── */
+  h2 {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 15pt;
+    font-weight: 700;
+    color: #18181b;
+    margin-top: 28pt;
+    margin-bottom: 10pt;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    break-after: avoid;
+  }
+
+  h2 .section-num {
+    color: #6d28d9;
+    font-size: 9pt;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4pt;
+  }
+
+  h3 {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 11pt;
+    font-weight: 600;
+    color: #18181b;
+    margin-top: 16pt;
+    margin-bottom: 6pt;
+    break-after: avoid;
+  }
+
+  p {
+    margin-bottom: 10pt;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid #e4e4e7;
+    margin: 24pt 0;
+  }
+
+  strong {
+    font-weight: 600;
+    color: #18181b;
+  }
+
+  em {
+    font-style: italic;
+    color: #52525b;
+  }
+
+  code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9pt;
+    background: #f4f4f5;
+    color: #6d28d9;
+    padding: 1pt 4pt;
+    border-radius: 3pt;
+  }
+
+  ul {
+    margin: 0 0 10pt 0;
+    padding-left: 18pt;
+  }
+
+  ul li {
+    margin-bottom: 6pt;
+    line-height: 1.65;
+  }
+
+  ul li:last-child {
+    margin-bottom: 0;
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    background: #ede9fe;
+    border-left: 3pt solid #6d28d9;
+    border-radius: 0 6pt 6pt 0;
+    padding: 12pt 16pt;
+    margin: 16pt 0;
+    break-inside: avoid;
+  }
+
+  .callout-label {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #6d28d9;
+    margin-bottom: 6pt;
+  }
+
+  .callout p {
+    font-size: 10pt;
+    color: #3b0764;
+    margin: 0;
+    line-height: 1.65;
+  }
+
+  /* ── TABLE ── */
+  .agent-table-wrap {
+    break-inside: avoid;
+    margin: 14pt 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  thead tr {
+    background: #18181b;
+    color: #ffffff;
+  }
+
+  thead th {
+    padding: 7pt 10pt;
+    text-align: left;
+    font-weight: 600;
+    font-size: 8.5pt;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid #f4f4f5;
+  }
+
+  tbody tr:nth-child(even) {
+    background: #fafafa;
+  }
+
+  tbody tr:hover {
+    background: #f5f3ff;
+  }
+
+  tbody td {
+    padding: 7pt 10pt;
+    vertical-align: middle;
+    line-height: 1.4;
+  }
+
+  tbody td:first-child {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  tbody td:last-child {
+    color: #71717a;
+    font-size: 8.5pt;
+  }
+
+  .tag-opus {
+    background: #ede9fe;
+    color: #6d28d9;
+    font-size: 7.5pt;
+    font-weight: 700;
+    padding: 1pt 5pt;
+    border-radius: 10pt;
+    white-space: nowrap;
+  }
+
+  .tag-sonnet {
+    background: #f0fdf4;
+    color: #15803d;
+    font-size: 7.5pt;
+    font-weight: 700;
+    padding: 1pt 5pt;
+    border-radius: 10pt;
+    white-space: nowrap;
+  }
+
+  .tag-haiku {
+    background: #fff7ed;
+    color: #c2410c;
+    font-size: 7.5pt;
+    font-weight: 700;
+    padding: 1pt 5pt;
+    border-radius: 10pt;
+    white-space: nowrap;
+  }
+
+  .tag-planned {
+    background: #f4f4f5;
+    color: #71717a;
+    font-size: 7.5pt;
+    font-weight: 600;
+    padding: 1pt 5pt;
+    border-radius: 10pt;
+    white-space: nowrap;
+  }
+
+  /* ── DIAGRAMS ── */
+  .diagram-wrap {
+    break-inside: avoid;
+    margin: 18pt 0;
+    text-align: center;
+  }
+
+  .diagram-caption {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 8pt;
+    color: #71717a;
+    margin-top: 8pt;
+    text-align: center;
+    font-style: italic;
+  }
+
+  /* ── AGENT SPEC LIST ── */
+  .spec-list {
+    background: #fafafa;
+    border: 1px solid #e4e4e7;
+    border-radius: 6pt;
+    padding: 12pt 16pt;
+    margin: 14pt 0;
+    break-inside: avoid;
+  }
+
+  .spec-list ul {
+    margin: 0;
+    padding-left: 16pt;
+  }
+
+  .spec-list li {
+    font-size: 9.5pt;
+    margin-bottom: 5pt;
+    color: #3f3f46;
+  }
+
+  /* ── CONTENT ── */
+  .content {
+    padding-top: 28pt;
+  }
+
+  .section {
+    margin-bottom: 6pt;
+  }
+
+  /* ── TIER LABELS ── */
+  .tier-block {
+    margin: 10pt 0;
+    padding: 10pt 14pt;
+    border-radius: 6pt;
+    break-inside: avoid;
+  }
+
+  .tier-l0 {
+    background: #ede9fe;
+    border-left: 3pt solid #6d28d9;
+    border-radius: 0 6pt 6pt 0;
+  }
+
+  .tier-l1 {
+    background: #f0fdf4;
+    border-left: 3pt solid #16a34a;
+    border-radius: 0 6pt 6pt 0;
+  }
+
+  .tier-l2 {
+    background: #fff7ed;
+    border-left: 3pt solid #ea580c;
+    border-radius: 0 6pt 6pt 0;
+  }
+
+  .tier-label {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 9pt;
+    font-weight: 700;
+    margin-bottom: 3pt;
+  }
+
+  .tier-l0 .tier-label { color: #6d28d9; }
+  .tier-l1 .tier-label { color: #16a34a; }
+  .tier-l2 .tier-label { color: #ea580c; }
+
+  .tier-block p {
+    font-size: 9.5pt;
+    margin: 0;
+    line-height: 1.6;
+    color: #3f3f46;
+  }
+
+  /* ── STAT BADGE ── */
+  .stat-badge {
+    display: inline-block;
+    background: #18181b;
+    color: #a78bfa;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 9pt;
+    font-weight: 700;
+    padding: 3pt 10pt;
+    border-radius: 20pt;
+    margin: 10pt 0;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── NIGHT ROTATION ── */
+  .rotation-grid {
+    display: flex;
+    gap: 8pt;
+    margin: 12pt 0;
+    break-inside: avoid;
+  }
+
+  .rotation-card {
+    flex: 1;
+    padding: 10pt 12pt;
+    border-radius: 6pt;
+    background: #fafafa;
+    border: 1px solid #e4e4e7;
+  }
+
+  .rotation-card .night-label {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6d28d9;
+    margin-bottom: 4pt;
+  }
+
+  .rotation-card p {
+    font-size: 9pt;
+    color: #52525b;
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  /* ── LIGHTNING ── */
+  .lightning-setup {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    border-radius: 6pt;
+    padding: 12pt 16pt;
+    margin: 14pt 0;
+    break-inside: avoid;
+  }
+
+  .lightning-setup ul {
+    margin: 0;
+    padding-left: 16pt;
+  }
+
+  .lightning-setup li {
+    font-size: 9.5pt;
+    color: #78350f;
+    margin-bottom: 5pt;
+  }
+
+  .experimental-badge {
+    display: inline-block;
+    background: #fcd34d;
+    color: #78350f;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 7.5pt;
+    font-weight: 700;
+    padding: 2pt 8pt;
+    border-radius: 10pt;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 12pt;
+  }
+
+  .lessons-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .lessons-list li {
+    padding: 8pt 0 8pt 0;
+    border-bottom: 1px solid #f4f4f5;
+    font-size: 10pt;
+    line-height: 1.65;
+  }
+
+  .lessons-list li:last-child {
+    border-bottom: none;
+  }
+
+  .lessons-list li::before {
+    content: "→";
+    color: #6d28d9;
+    font-weight: 700;
+    margin-right: 8pt;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════ COVER -->
+<div class="cover">
+  <div class="cover-eyebrow">OpenClaw Agent System · Field Guide</div>
+  <div class="cover-title">Building an AI Agent Team<br>That Works While You Sleep</div>
+  <div class="cover-subtitle">A practical walkthrough of a real 9-agent OpenClaw setup —<br>including a Bitcoin Lightning accountability layer</div>
+  <div class="cover-tagline">"What happens when you stop talking to one AI and start running a team"</div>
+  <div class="cover-meta"><strong>By Michael MacIver</strong> &nbsp;·&nbsp; February 2026</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ CONTENT -->
+<div class="content">
+
+<!-- ── Section 1 ── -->
+<div class="section">
+  <h2><span class="section-num">Section 01</span>The Problem With One Agent</h2>
+
+  <p>You've probably been here: you open a chat, explain your whole project, ask for help, get something useful — and then close the window. Next day you come back, and it's blank. You explain it all again. You are the memory. You are the coordinator. You are the glue holding the whole thing together.</p>
+
+  <p>That's not a team. That's a very expensive calculator that's polite to you.</p>
+
+  <p>Single agents are impressive in isolation. They can write, reason, research, code — often better than we expect. But they're stateless by default. They don't specialise. They can't run while you sleep. They wait for you to tell them what to do, which means you're still doing all the work that matters: deciding what's important, tracking what's in progress, remembering what happened last time.</p>
+
+  <p>The shift that changed everything for us wasn't a better model or a smarter prompt. It was simpler: <strong>treat agents like a team, not a chatbot.</strong> Give each one a defined role, a persistent memory, and clear handoff protocols. Then get out of the way.</p>
+</div>
+
+<hr>
+
+<!-- ── Section 2 ── -->
+<div class="section">
+  <h2><span class="section-num">Section 02</span>Meet the Team</h2>
+
+  <p>Nine agents, each with a specific job. Some run on Claude Opus for heavy reasoning, most on Sonnet for the daily workload, and one on Haiku for the lightweight ops work that runs all night. Here's the roster:</p>
+
+  <div class="agent-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Agent</th>
+          <th>Role</th>
+          <th>Model</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Jet 🤖</td>
+          <td>Orchestrator — leads, delegates, owns the backlog</td>
+          <td><span class="tag-opus">Opus</span></td>
+        </tr>
+        <tr>
+          <td>Forge 💻</td>
+          <td>Backend dev — Python, automation, APIs</td>
+          <td><span class="tag-sonnet">Sonnet</span></td>
+        </tr>
+        <tr>
+          <td>Render 🖥️</td>
+          <td>Frontend dev — TypeScript, React, Next.js</td>
+          <td><span class="tag-sonnet">Sonnet</span></td>
+        </tr>
+        <tr>
+          <td>Scout 🔍</td>
+          <td>Researcher — finds signal, ignores noise</td>
+          <td><span class="tag-sonnet">Sonnet</span></td>
+        </tr>
+        <tr>
+          <td>Quill ✍️</td>
+          <td>Writer — content, copy, comms</td>
+          <td><span class="tag-sonnet">Sonnet</span></td>
+        </tr>
+        <tr>
+          <td>Pixel 🎨</td>
+          <td>Designer — visuals, UI polish</td>
+          <td><span class="tag-sonnet">Sonnet</span></td>
+        </tr>
+        <tr>
+          <td>Oracle 🔮</td>
+          <td>Architect — hard problems, system design</td>
+          <td><span class="tag-opus">Opus</span></td>
+        </tr>
+        <tr>
+          <td>Atlas ⚙️</td>
+          <td>Ops — cron jobs, health checks, monitoring</td>
+          <td><span class="tag-haiku">Haiku</span></td>
+        </tr>
+        <tr>
+          <td>Cipher 🔐</td>
+          <td>Security — audits, reviews (planned)</td>
+          <td><span class="tag-planned">Sonnet · planned</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ORG CHART SVG -->
+  <div class="diagram-wrap">
+    <svg width="620" height="200" viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, -apple-system, sans-serif">
+      <!-- Connecting lines: Jet to row 1 -->
+      <line x1="310" y1="52" x2="80"  y2="118" stroke="#c4b5fd" stroke-width="1.5"/>
+      <line x1="310" y1="52" x2="185" y2="118" stroke="#c4b5fd" stroke-width="1.5"/>
+      <line x1="310" y1="52" x2="290" y2="118" stroke="#c4b5fd" stroke-width="1.5"/>
+      <line x1="310" y1="52" x2="395" y2="118" stroke="#c4b5fd" stroke-width="1.5"/>
+      <line x1="310" y1="52" x2="500" y2="118" stroke="#c4b5fd" stroke-width="1.5"/>
+      <!-- row 2 -->
+      <line x1="310" y1="52" x2="80"  y2="162" stroke="#c4b5fd" stroke-width="1" stroke-dasharray="3 2"/>
+      <line x1="310" y1="52" x2="210" y2="162" stroke="#c4b5fd" stroke-width="1" stroke-dasharray="3 2"/>
+      <line x1="310" y1="52" x2="375" y2="162" stroke="#c4b5fd" stroke-width="1" stroke-dasharray="3 2"/>
+      <line x1="310" y1="52" x2="540" y2="162" stroke="#c4b5fd" stroke-width="1" stroke-dasharray="3 2"/>
+
+      <!-- JET node -->
+      <rect x="245" y="10" width="130" height="42" rx="8" fill="#18181b"/>
+      <text x="310" y="28" text-anchor="middle" fill="#a78bfa" font-size="9" font-weight="700" letter-spacing="0.08em">ORCHESTRATOR</text>
+      <text x="310" y="44" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700">Jet 🤖</text>
+
+      <!-- Row 1: Forge, Render, Scout, Quill, Oracle -->
+      <rect x="40"  y="120" width="80" height="36" rx="6" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1.5"/>
+      <text x="80"  y="133" text-anchor="middle" fill="#6d28d9" font-size="7.5" font-weight="700">BACKEND</text>
+      <text x="80"  y="148" text-anchor="middle" fill="#18181b" font-size="10" font-weight="600">Forge 💻</text>
+
+      <rect x="145" y="120" width="80" height="36" rx="6" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1.5"/>
+      <text x="185" y="133" text-anchor="middle" fill="#6d28d9" font-size="7.5" font-weight="700">FRONTEND</text>
+      <text x="185" y="148" text-anchor="middle" fill="#18181b" font-size="10" font-weight="600">Render 🖥️</text>
+
+      <rect x="250" y="120" width="80" height="36" rx="6" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1.5"/>
+      <text x="290" y="133" text-anchor="middle" fill="#6d28d9" font-size="7.5" font-weight="700">RESEARCH</text>
+      <text x="290" y="148" text-anchor="middle" fill="#18181b" font-size="10" font-weight="600">Scout 🔍</text>
+
+      <rect x="355" y="120" width="80" height="36" rx="6" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1.5"/>
+      <text x="395" y="133" text-anchor="middle" fill="#6d28d9" font-size="7.5" font-weight="700">WRITING</text>
+      <text x="395" y="148" text-anchor="middle" fill="#18181b" font-size="10" font-weight="600">Quill ✍️</text>
+
+      <rect x="460" y="120" width="80" height="36" rx="6" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1.5"/>
+      <text x="500" y="133" text-anchor="middle" fill="#6d28d9" font-size="7.5" font-weight="700">ARCHITECT</text>
+      <text x="500" y="148" text-anchor="middle" fill="#18181b" font-size="10" font-weight="600">Oracle 🔮</text>
+
+      <!-- Row 2: Pixel, Atlas, Cipher (below, smaller) -->
+      <rect x="40"  y="164" width="80" height="30" rx="6" fill="#fafafa" stroke="#e4e4e7" stroke-width="1.5"/>
+      <text x="80"  y="183" text-anchor="middle" fill="#52525b" font-size="9.5">Pixel 🎨</text>
+
+      <rect x="170" y="164" width="80" height="30" rx="6" fill="#fafafa" stroke="#e4e4e7" stroke-width="1.5"/>
+      <text x="210" y="183" text-anchor="middle" fill="#52525b" font-size="9.5">Atlas ⚙️</text>
+
+      <rect x="335" y="164" width="80" height="30" rx="6" fill="#fafafa" stroke="#e4e4e7" stroke-width="1.5" stroke-dasharray="4 2"/>
+      <text x="375" y="183" text-anchor="middle" fill="#a1a1aa" font-size="9.5">Cipher 🔐</text>
+
+      <!-- legend -->
+      <rect x="485" y="168" width="10" height="10" rx="2" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1.5"/>
+      <text x="500" y="178" fill="#71717a" font-size="8">Active</text>
+      <rect x="530" y="168" width="10" height="10" rx="2" fill="#fafafa" stroke="#e4e4e7" stroke-width="1.5" stroke-dasharray="4 2"/>
+      <text x="545" y="178" fill="#71717a" font-size="8">Planned</text>
+    </svg>
+    <div class="diagram-caption">Team structure: Jet orchestrates all 8 specialist agents. Solid border = active. Dashed = planned.</div>
+  </div>
+
+  <p>Each agent has three things that make them real rather than a one-shot session:</p>
+
+  <div class="spec-list">
+    <ul>
+      <li><strong><code>SOUL.md</code></strong> — their personality, role definition, working style, and ground rules. Read at the start of every session.</li>
+      <li><strong><code>checkpoint.json</code></strong> — under 1KB, always loaded. Contains what the agent was last doing, status, and what the next session needs to know to resume without re-explaining.</li>
+      <li><strong>Tiered memory files</strong> — daily notes, long-term memory. Each agent only loads what's actually relevant to the task at hand.</li>
+    </ul>
+  </div>
+
+  <p>The soul file is what transforms a generic LLM session into a character with opinions. Forge doesn't ask Jet whether to write tests — it just does. Render doesn't need to be told to check mobile responsiveness — it's in the soul. These aren't prompts you paste every time. They're loaded automatically and they shape behaviour over time.</p>
+</div>
+
+<hr>
+
+<!-- ── Section 3 ── -->
+<div class="section">
+  <h2><span class="section-num">Section 03</span>Memory That Actually Works</h2>
+
+  <p>The biggest unsolved problem with AI agents isn't intelligence — it's continuity. Every session starts blank. The agent you had a great conversation with yesterday has no memory of it today. If you don't re-explain the context, you get generic output. If you do re-explain it, you're burning tokens and time on something that should already be known.</p>
+
+  <p>Our solution is three memory tiers, each with a different job:</p>
+
+  <div class="tier-block tier-l0">
+    <div class="tier-label">L0 — The Checkpoint &nbsp;·&nbsp; &lt;1KB JSON, always loaded</div>
+    <p>Written at the end of every significant task. "Here's what I was doing, here's the current status, here's what the next session needs to know to continue." When an agent restarts, it reads this first. The session picks up where it left off — no re-explaining, no context archaeology. At sub-1KB it's essentially free to load.</p>
+  </div>
+
+  <div class="tier-block tier-l1">
+    <div class="tier-label">L1 — Daily Notes &nbsp;·&nbsp; memory/YYYY-MM-DD.md</div>
+    <p>A running log of what happened today. Raw and unglamorous. Only loaded when the task is clearly connected to recent work — not loaded by default. If you're debugging something Forge built yesterday, the daily note gets pulled. If you're writing something new, it doesn't.</p>
+  </div>
+
+  <div class="tier-block tier-l2">
+    <div class="tier-label">L2 — Long-Term Memory &nbsp;·&nbsp; MEMORY.md</div>
+    <p>Curated. Updated intentionally. This is the distilled version — not raw logs, but the lessons and context worth keeping across weeks or months. When something important is figured out, someone writes it down here. When old information is no longer relevant, it gets pruned. Small, high signal.</p>
+  </div>
+
+  <!-- MEMORY PYRAMID SVG -->
+  <div class="diagram-wrap">
+    <svg width="480" height="200" viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, -apple-system, sans-serif">
+      <!-- L0 - top, smallest, most frequent -->
+      <polygon points="240,18 195,70 285,70" fill="#6d28d9"/>
+      <text x="240" y="48" text-anchor="middle" fill="white" font-size="9.5" font-weight="700">L0</text>
+
+      <!-- L1 - middle -->
+      <polygon points="240,78 165,138 315,138" fill="#a78bfa"/>
+      <text x="240" y="113" text-anchor="middle" fill="white" font-size="10" font-weight="700">L1</text>
+
+      <!-- L2 - base, largest, least frequent -->
+      <polygon points="240,146 130,198 350,198" fill="#c4b5fd"/>
+      <text x="240" y="178" text-anchor="middle" fill="#3b0764" font-size="10" font-weight="700">L2</text>
+
+      <!-- Labels right -->
+      <text x="305" y="52"  fill="#6d28d9" font-size="9" font-weight="700">Checkpoint</text>
+      <text x="305" y="64"  fill="#71717a" font-size="8">Always loaded · &lt;1KB</text>
+      <text x="335" y="116" fill="#7c3aed" font-size="9" font-weight="700">Daily Notes</text>
+      <text x="335" y="128" fill="#71717a" font-size="8">Loaded when relevant</text>
+      <text x="362" y="178" fill="#5b21b6" font-size="9" font-weight="700">Long-Term Memory</text>
+      <text x="362" y="190" fill="#71717a" font-size="8">Main session only · curated</text>
+
+      <!-- Arrow labels left -->
+      <text x="70" y="100" fill="#71717a" font-size="8" text-anchor="middle">Load</text>
+      <text x="70" y="112" fill="#71717a" font-size="8" text-anchor="middle">frequency</text>
+      <line x1="70" y1="40" x2="70" y2="195" stroke="#e4e4e7" stroke-width="1"/>
+      <polygon points="70,30 66,42 74,42" fill="#e4e4e7"/>
+      <text x="70" y="26" fill="#a78bfa" font-size="8" text-anchor="middle" font-weight="700">HIGH</text>
+      <text x="70" y="200" fill="#71717a" font-size="8" text-anchor="middle">LOW</text>
+    </svg>
+    <div class="diagram-caption">Memory tiers: L0 loads every session, L1 loads when relevant, L2 loads in main sessions only.</div>
+  </div>
+
+  <p>The result: roughly <span class="stat-badge">83% less startup token cost</span> compared to loading full context every session. More importantly, agents that actually remember — not because they're smarter, but because we engineered the continuity deliberately.</p>
+
+  <div class="callout">
+    <div class="callout-label">💡 Lesson Learned</div>
+    <p>Write the checkpoint continuously, not just at session end. 50 tokens written mid-task saves 5,000 tokens of confusion when you restart. Think of it less like a log entry and more like a sticky note you leave for your future self.</p>
+  </div>
+</div>
+
+<hr>
+
+<!-- ── Section 4 ── -->
+<div class="section">
+  <h2><span class="section-num">Section 04</span>The Nightly Workflow</h2>
+
+  <p>The most useful thing the team does isn't any single feature — it's the fact that they work without being asked. When you go to sleep, the system doesn't. That shift — from reactive assistant to proactive team — is where the real leverage is.</p>
+
+  <p>We run two different overnight modes:</p>
+
+  <h3>Nightly Hail Mary &nbsp;<em style="font-weight:400; color:#71717a;">(2am, automatic)</em></h3>
+  <p>A creativity cron. Jet wakes up, scans for interesting signals on Moltbook and X, finds something worth building or writing, and does it. No brief needed. Output lands in a staging folder. Michael reviews it in the morning and decides if it's worth keeping. Most nights, there's something interesting. Occasionally there's something great.</p>
+
+  <h3>Nightly Work Session &nbsp;<em style="font-weight:400; color:#71717a;">(triggered by "goodnight")</em></h3>
+  <p>When Michael says goodnight, Jet reads the full task backlog, scores each item by expected value, picks the highest-priority work, and writes briefs for the right agents. By morning: new commits on GitHub, health logs from Atlas, build notes from Quill. The work happened while nobody was watching.</p>
+
+  <!-- FLOWCHART SVG -->
+  <div class="diagram-wrap">
+    <svg width="580" height="90" viewBox="0 0 580 90" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, -apple-system, sans-serif">
+      <!-- Boxes -->
+      <!-- 1 -->
+      <rect x="10"  y="25" width="90" height="40" rx="6" fill="#18181b"/>
+      <text x="55"  y="41" text-anchor="middle" fill="#a78bfa" font-size="7.5" font-weight="700">MICHAEL</text>
+      <text x="55"  y="56" text-anchor="middle" fill="white"   font-size="8.5">"goodnight"</text>
+      <!-- arrow -->
+      <line x1="100" y1="45" x2="118" y2="45" stroke="#c4b5fd" stroke-width="2"/>
+      <polygon points="118,41 126,45 118,49" fill="#c4b5fd"/>
+      <!-- 2 -->
+      <rect x="126" y="25" width="90" height="40" rx="6" fill="#6d28d9"/>
+      <text x="171" y="41" text-anchor="middle" fill="#ede9fe" font-size="7.5" font-weight="700">JET 🤖</text>
+      <text x="171" y="56" text-anchor="middle" fill="white"   font-size="8.5">scores backlog</text>
+      <!-- arrow -->
+      <line x1="216" y1="45" x2="234" y2="45" stroke="#c4b5fd" stroke-width="2"/>
+      <polygon points="234,41 242,45 234,49" fill="#c4b5fd"/>
+      <!-- 3 -->
+      <rect x="242" y="25" width="90" height="40" rx="6" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1.5"/>
+      <text x="287" y="41" text-anchor="middle" fill="#6d28d9" font-size="7.5" font-weight="700">BRIEFS</text>
+      <text x="287" y="56" text-anchor="middle" fill="#3f3f46" font-size="8.5">agents briefed</text>
+      <!-- arrow -->
+      <line x1="332" y1="45" x2="350" y2="45" stroke="#c4b5fd" stroke-width="2"/>
+      <polygon points="350,41 358,45 350,49" fill="#c4b5fd"/>
+      <!-- 4 -->
+      <rect x="358" y="25" width="90" height="40" rx="6" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1.5"/>
+      <text x="403" y="41" text-anchor="middle" fill="#6d28d9" font-size="7.5" font-weight="700">TEAM RUNS</text>
+      <text x="403" y="56" text-anchor="middle" fill="#3f3f46" font-size="8.5">overnight work</text>
+      <!-- arrow -->
+      <line x1="448" y1="45" x2="466" y2="45" stroke="#c4b5fd" stroke-width="2"/>
+      <polygon points="466,41 474,45 466,49" fill="#c4b5fd"/>
+      <!-- 5 -->
+      <rect x="474" y="25" width="96" height="40" rx="6" fill="#18181b"/>
+      <text x="522" y="41" text-anchor="middle" fill="#a78bfa" font-size="7.5" font-weight="700">MORNING</text>
+      <text x="522" y="56" text-anchor="middle" fill="white"   font-size="8.5">commits ready</text>
+
+      <!-- time label -->
+      <text x="290" y="82" text-anchor="middle" fill="#a1a1aa" font-size="7.5" font-style="italic">~8 hours of unattended work</text>
+    </svg>
+    <div class="diagram-caption">The nightly handoff: one word triggers a full work session.</div>
+  </div>
+
+  <p>To keep things from going in circles, we run a three-night rotation. Without structure, agents default to whatever feels urgent — which is usually the wrong thing:</p>
+
+  <div class="rotation-grid">
+    <div class="rotation-card">
+      <div class="night-label">Night A — Intel + Build</div>
+      <p>Scout researches. Forge builds from findings. Knowledge becomes product.</p>
+    </div>
+    <div class="rotation-card">
+      <div class="night-label">Night B — Project Sprint</div>
+      <p>Deep work on the current highest-priority project. Full team focus on one thing.</p>
+    </div>
+    <div class="rotation-card">
+      <div class="night-label">Night C — Research + Tools</div>
+      <p>Explore new capabilities. Improve infrastructure. Invest in the team itself.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">💡 Lesson Learned</div>
+    <p>Without rotation, agents default to whatever feels urgent. Urgency is not the same as importance. The rotation is what creates compound progress — each night type builds on the previous cycle rather than oscillating between the same two fires.</p>
+  </div>
+</div>
+
+<hr>
+
+<!-- ── Section 5 ── -->
+<div class="section">
+  <h2><span class="section-num">Section 05</span>The Lightning Wallet Layer</h2>
+
+  <span class="experimental-badge">⚗️ Experimental — Architecture designed, not yet deployed</span>
+
+  <p>Here's the weird part. And also maybe the most interesting part.</p>
+
+  <p>The problem with any agent system is that agents have no skin in the game. They report task completion with equal confidence whether they did careful work or sloppy work. There's no quality gradient. No consequence for cutting corners. No reason to be excellent rather than merely acceptable.</p>
+
+  <p><strong>The idea:</strong> give each agent a real Bitcoin Lightning wallet. Small amounts — we're talking $5–10 per agent per week. Agents earn sats for good output. They spend them on services they actually need: data APIs, LLM calls, paying other agents for work.</p>
+
+  <div class="lightning-setup">
+    <strong style="font-size: 9.5pt; color: #78350f; display: block; margin-bottom: 8pt;">The Infrastructure</strong>
+    <ul>
+      <li>Raspberry Pi 5 running Umbrel — Bitcoin Core + Lightning node + LNBits</li>
+      <li>LNBits creates isolated sub-wallets per agent, each with their own API keys</li>
+      <li>Jet holds the treasury (~$100 starting balance in sats)</li>
+      <li>Each agent gets a ~$5–10 weekly budget from the treasury</li>
+      <li>Agents can spend on: data APIs, LLM calls via LightningProx (~5 sats/call), work delegated to other agents</li>
+    </ul>
+  </div>
+
+  <!-- LIGHTNING DIAGRAM SVG -->
+  <div class="diagram-wrap">
+    <svg width="540" height="160" viewBox="0 0 540 160" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, -apple-system, sans-serif">
+      <!-- Pi node -->
+      <rect x="10" y="55" width="100" height="50" rx="8" fill="#18181b"/>
+      <text x="60" y="76"  text-anchor="middle" fill="#fcd34d" font-size="8" font-weight="700">RASPBERRY PI 5</text>
+      <text x="60" y="91"  text-anchor="middle" fill="#d4d4d8" font-size="7.5">Bitcoin Core</text>
+      <text x="60" y="103" text-anchor="middle" fill="#d4d4d8" font-size="7.5">Lightning Node</text>
+
+      <!-- Arrow Pi → LNBits -->
+      <line x1="110" y1="80" x2="148" y2="80" stroke="#fcd34d" stroke-width="2"/>
+      <polygon points="148,76 156,80 148,84" fill="#fcd34d"/>
+
+      <!-- LNBits -->
+      <rect x="156" y="55" width="90" height="50" rx="8" fill="#78350f"/>
+      <text x="201" y="76"  text-anchor="middle" fill="#fcd34d" font-size="9" font-weight="700">LNBits</text>
+      <text x="201" y="91"  text-anchor="middle" fill="#fef3c7" font-size="7.5">wallet server</text>
+      <text x="201" y="103" text-anchor="middle" fill="#fef3c7" font-size="7.5">API keys per agent</text>
+
+      <!-- Arrow LNBits → Jet (treasury) -->
+      <line x1="246" y1="80" x2="284" y2="80" stroke="#fcd34d" stroke-width="2"/>
+      <polygon points="284,76 292,80 284,84" fill="#fcd34d"/>
+
+      <!-- Jet treasury -->
+      <rect x="292" y="45" width="80" height="70" rx="8" fill="#6d28d9"/>
+      <text x="332" y="66"  text-anchor="middle" fill="#ede9fe" font-size="7.5" font-weight="700">JET 🤖</text>
+      <text x="332" y="79"  text-anchor="middle" fill="white"   font-size="7.5">TREASURY</text>
+      <text x="332" y="92"  text-anchor="middle" fill="#c4b5fd" font-size="7">~$100 in sats</text>
+      <text x="332" y="104" text-anchor="middle" fill="#c4b5fd" font-size="7">approves &gt;5K sat</text>
+
+      <!-- Arrows Jet → sub-wallets -->
+      <line x1="372" y1="65" x2="408" y2="50"  stroke="#a78bfa" stroke-width="1.5"/>
+      <line x1="372" y1="80" x2="408" y2="80"  stroke="#a78bfa" stroke-width="1.5"/>
+      <line x1="372" y1="95" x2="408" y2="110" stroke="#a78bfa" stroke-width="1.5"/>
+
+      <!-- Sub-wallets -->
+      <rect x="408" y="20"  width="112" height="28" rx="5" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1"/>
+      <text x="464" y="38" text-anchor="middle" fill="#6d28d9" font-size="8.5">Forge 💻 · Render 🖥️</text>
+
+      <rect x="408" y="66"  width="112" height="28" rx="5" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1"/>
+      <text x="464" y="84" text-anchor="middle" fill="#6d28d9" font-size="8.5">Scout 🔍 · Quill ✍️</text>
+
+      <rect x="408" y="112" width="112" height="28" rx="5" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1"/>
+      <text x="464" y="130" text-anchor="middle" fill="#6d28d9" font-size="8.5">Pixel 🎨 · Atlas ⚙️</text>
+
+      <!-- label -->
+      <text x="464" y="152" text-anchor="middle" fill="#a1a1aa" font-size="7.5" font-style="italic">isolated sub-wallets per agent</text>
+    </svg>
+    <div class="diagram-caption">Lightning infrastructure: Pi 5 runs the node, LNBits creates agent sub-wallets, Jet controls the treasury.</div>
+  </div>
+
+  <p><strong>Why Lightning specifically?</strong> Bitcoin's Lightning Network is the only payment rail an AI agent can cryptographically verify without trusting a third party. The payment receipt <em>proves</em> the transaction happened — no intermediary, no "trust me." And Lightning Labs released an official AI agent toolkit in February 2026. The infrastructure timing is exactly right.</p>
+
+  <p>The security model is simple: balance caps are hard spending limits. Agents literally cannot overspend. Any payment above 5,000 sats (~$5) requires Jet's approval. Full audit log, reviewed daily. Agents have their own keys and can't touch other wallets.</p>
+
+  <p>The hypothesis we want to test: does an agent with real economic stakes produce measurably better output than one without? We think yes — not because the money is significant, but because real constraints create real behaviour. An agent that has to <em>spend</em> to get resources starts to think about whether those resources are worth it.</p>
+</div>
+
+<hr>
+
+<!-- ── Section 6 ── -->
+<div class="section">
+  <h2><span class="section-num">Section 06</span>Lessons Learned</h2>
+
+  <p>Months of running this setup have produced some opinions. Here's what we'd tell anyone starting from scratch:</p>
+
+  <ul class="lessons-list">
+    <li><strong>Brief agents on single tasks, not mega-lists.</strong> Five-task briefs produce five half-finished things. One-task briefs produce one complete, reviewable thing. The throughput feels slower and isn't.</li>
+    <li><strong>Checkpoints beat session summaries.</strong> Nobody reads session summaries. A sub-1KB JSON that auto-loads at the start of every session is actually used. The medium determines the outcome.</li>
+    <li><strong>Atlas is underrated.</strong> The ops agent — the boring one running cron jobs and health checks — saves more time than any single feature agent. Cron jobs that auto-restart broken services mean you don't wake up to disasters. Infrastructure is invisible until it isn't.</li>
+    <li><strong>Specialism compounds.</strong> Forge and Render have a contract protocol: Forge writes the API interface definition, Render builds against it. No integration surprises at 2am. Two specialists with a clear boundary outperform one generalist trying to do both.</li>
+    <li><strong>The Kiro warning.</strong> Amazon's internal agent (Kiro) caused a 13-hour production outage from autonomous destructive ops. Our rule: no agent has external send access without a confirm step. Emails, posts, live deploys — all require explicit human sign-off. The autonomy that makes agents useful is exactly the thing that can hurt you.</li>
+    <li><strong>Start with one agent done well, not nine done poorly.</strong> The team grew over months. Jet came first. Each new agent was added when there was a clear gap — not because the org chart said there should be nine boxes. Don't pre-build the structure. Grow into it.</li>
+  </ul>
+
+  <div class="callout" style="margin-top: 20pt;">
+    <div class="callout-label">The real insight</div>
+    <p>An agent team isn't a product you install — it's an organisation you build. The same things that make a human team work (clear roles, good communication, shared memory, accountability) are exactly what make an AI team work. The technology is new. The management principles aren't.</p>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+</body>
+</html>
