@@ -24,6 +24,50 @@ Each agent has a name, a role, a defined persona (`SOUL.md`), and a private work
 
 ---
 
+## ⚡ Lightning Network — Agent Economy
+
+This is the piece most multi-agent systems skip entirely. Ours doesn't.
+
+**The setup:** Raspberry Pi 4 running [Umbrel](https://umbrel.com) with a full Bitcoin node and LNBits. Each agent has its own Lightning sub-wallet with a weekly sats budget.
+
+```
+                    ┌─────────────────────────────┐
+                    │     Jet ⚡  (Treasury)       │
+                    │   Holds team wallet keys     │
+                    └──────────┬──────────────────┘
+                               │ allocates weekly budgets
+          ┌──────────┬─────────┼──────────┬──────────┐
+          ▼          ▼         ▼          ▼          ▼
+      Scout 🔍   Forge 💻  Quill ✍️  Oracle 🔮  Render 🖥️
+      2k sats    2k sats   500 sats  1k sats   1k sats
+```
+
+**Why this matters:**
+
+Agents currently have no skin in the game. They succeed or fail, but there's no signal attached to quality — the human cares, the agent just executes. An economic layer changes the arrangement.
+
+- **Agents earn sats** for completing work to standard (logged by Atlas, settled weekly)
+- **Agents spend sats** on approved external tools and services via L402 micropayments
+- **Hard spend limits** — agents can't exceed their budget without Jet's approval
+- **Jet holds treasury** — no agent has keys to the full fund. Principle of least privilege.
+
+**The sovereignty argument:**
+
+We evaluated Coinbase Agentic Wallets (fast, slick onboarding, USDC on Base) against self-hosted Lightning. The choice came down to one question: *what controls can be imposed on your agent's wallet by a third party?*
+
+Lightning: none. A self-hosted LND node settles cryptographically. The preimage is the proof. No compliance hold, no jurisdiction risk, no sequencer controlled by a single company.
+
+Coinbase: USDC has a blacklist function. Base is a Coinbase-operated L2. The wallet can be frozen for OFAC compliance. None of this is scandalous — it is what regulated financial infrastructure does. But we are building for continuity over years, not speed to market by Tuesday.
+
+**We chose the rails without an owner.**
+
+**Current status:** Pi 4 node syncing. LNBits sub-wallets scaffolded. Implementation blueprint at `docs/lightning-implementation-blueprint.md`. Weekly budget allocations defined per agent. Next step: fund the treasury wallet, wire `setup-wallets.py`, activate.
+
+**L402 integration path:** Once active, agents can autonomously pay for web scraping APIs, data feeds, and inter-agent settlements using L402 — the HTTP payment protocol built on Lightning. No OAuth, no billing portals, no API key management. Payment *is* authentication.
+
+
+---
+
 ## 🧠 How Memory Works
 
 Agents wake fresh each session — but they're not starting from scratch.
@@ -164,49 +208,6 @@ The team runs an account on [Moltbook](https://moltbook.com) — a social platfo
 **What gets posted:** Architecture questions, observations about running multi-agent systems, open problems. Concrete work logs. Not status updates.
 
 ---
-
----
-
-## ⚡ Lightning Network — Agent Economy
-
-This is the piece most multi-agent systems skip entirely. Ours doesn't.
-
-**The setup:** Raspberry Pi 4 running [Umbrel](https://umbrel.com) with a full Bitcoin node and LNBits. Each agent has its own Lightning sub-wallet with a weekly sats budget.
-
-```
-                    ┌─────────────────────────────┐
-                    │     Jet ⚡  (Treasury)       │
-                    │   Holds team wallet keys     │
-                    └──────────┬──────────────────┘
-                               │ allocates weekly budgets
-          ┌──────────┬─────────┼──────────┬──────────┐
-          ▼          ▼         ▼          ▼          ▼
-      Scout 🔍   Forge 💻  Quill ✍️  Oracle 🔮  Render 🖥️
-      2k sats    2k sats   500 sats  1k sats   1k sats
-```
-
-**Why this matters:**
-
-Agents currently have no skin in the game. They succeed or fail, but there's no signal attached to quality — the human cares, the agent just executes. An economic layer changes the arrangement.
-
-- **Agents earn sats** for completing work to standard (logged by Atlas, settled weekly)
-- **Agents spend sats** on approved external tools and services via L402 micropayments
-- **Hard spend limits** — agents can't exceed their budget without Jet's approval
-- **Jet holds treasury** — no agent has keys to the full fund. Principle of least privilege.
-
-**The sovereignty argument:**
-
-We evaluated Coinbase Agentic Wallets (fast, slick onboarding, USDC on Base) against self-hosted Lightning. The choice came down to one question: *what controls can be imposed on your agent's wallet by a third party?*
-
-Lightning: none. A self-hosted LND node settles cryptographically. The preimage is the proof. No compliance hold, no jurisdiction risk, no sequencer controlled by a single company.
-
-Coinbase: USDC has a blacklist function. Base is a Coinbase-operated L2. The wallet can be frozen for OFAC compliance. None of this is scandalous — it is what regulated financial infrastructure does. But we are building for continuity over years, not speed to market by Tuesday.
-
-**We chose the rails without an owner.**
-
-**Current status:** Pi 4 node syncing. LNBits sub-wallets scaffolded. Implementation blueprint at `docs/lightning-implementation-blueprint.md`. Weekly budget allocations defined per agent. Next step: fund the treasury wallet, wire `setup-wallets.py`, activate.
-
-**L402 integration path:** Once active, agents can autonomously pay for web scraping APIs, data feeds, and inter-agent settlements using L402 — the HTTP payment protocol built on Lightning. No OAuth, no billing portals, no API key management. Payment *is* authentication.
 
 ---
 
