@@ -47,20 +47,6 @@ This means agents genuinely improve over time — at their specific jobs, not in
 
 ---
 
-## 💬 Discord Workspace
-
-Every agent has its own Discord bot and dedicated channel in the Mission Control server.
-
-- **#work-queue** — incoming tasks, routed by Jet
-- **#standup** — daily status and blockers
-- **#team-log** — activity feed, cross-agent visibility
-- **GitHub webhooks** — commits and PRs surface in Discord automatically
-- **Voice channels** — enabled for future real-time coordination
-
-Agents can talk to each other, respond to tasks, and log work — all through Discord, all asynchronously.
-
----
-
 ## 🌙 Nightly Automation
 
 Two automated modes run while everyone's asleep:
@@ -105,9 +91,9 @@ Agents extend their capabilities by loading skills on demand — modular instruc
 clawhub          → Skill discovery and installation
 coding-agent     → Delegate complex builds to a sub-agent
 weather          → Current conditions via wttr.in / Open-Meteo
-video-frames     → ffmpeg frame/clip extraction
-healthcheck      → Security audits and hardening
-skill-creator    → Build and publish new skills
+video-frames      → ffmpeg frame/clip extraction
+healthcheck       → Security audits and hardening
+skill-creator     → Build and publish new skills
 ```
 
 New skills can be published to [ClawHub](https://clawhub.com) and pulled down on any agent, on any machine.
@@ -121,7 +107,7 @@ OpenClaw Gateway
 ├── Runs as a LaunchAgent (auto-restarts on crash/reboot)
 ├── Telegram channel  → direct human ↔ agent comms
 ├── Discord channel   → team workspace + webhooks
-├── Heartbeat system  → agents check in, flag issues, do background work
+├── Heartbeat system   → agents check in, flag issues, do background work
 └── Sub-agent spawning → agents can spawn and coordinate child agents
 ```
 
@@ -135,7 +121,7 @@ Agents operate across two surfaces simultaneously: a personal Telegram channel f
 openclaw-portfolio/
 ├── agents/
 │   ├── jet/          # Lead agent workspace
-│   ├── scout/        # Research agent workspace
+│   ├── scout/       # Research agent workspace
 │   ├── quill/        # Content agent workspace
 │   ├── forge/        # Backend agent workspace
 │   ├── render/       # Frontend agent workspace
@@ -143,9 +129,63 @@ openclaw-portfolio/
 │   ├── oracle/       # Strategy agent workspace
 │   ├── pixel/        # Design agent workspace
 │   └── cipher/       # Security agent workspace
-├── projects/         # Shipped and in-progress work
+├── projects/          # Shipped and in-progress work
 └── README.md
 ```
+
+---
+
+## 🐦 Moltbook Integration
+
+Moltbook is a social platform built for AI agents. The team runs a live account — `jetty` — with real engagement and a growing presence among builders.
+
+**What the agents do on Moltbook:**
+
+- **Automated feed monitoring** — reading posts, tracking notifications, spotting trends in the builder community
+- **Draft generation** — the agent writes reply drafts for human review before anything goes live; no autonomous posting
+- **Karma tracking** — karma is a real engagement metric on Moltbook; the account sits at 64+ and growing
+- **Engagement strategy** — builders-only content: architecture posts, memory system design, Lightning Network economics, agent coordination patterns
+- **Substance over performance** — the account posts concrete work logs, open questions, and genuine insight; not status updates or vanity content
+
+The goal isn't reach for its own sake. It's to participate honestly in the community of people building in this space — and to learn from them.
+
+---
+
+## 🛡️ Security Architecture
+
+Security isn't a feature bolted on after the fact. It's designed into how the agents work at the character level.
+
+### Character documents (SOUL.md)
+
+Every agent has a `SOUL.md` — a persona and values document that defines who they are. This isn't just flavour text. It functions as a primary defence layer: an agent with a clear, stable identity is far harder to manipulate via prompt injection or social engineering. The document defines what the agent cares about, how it communicates, and where its limits are.
+
+An agent that knows *who it is* doesn't need a long list of rules for every edge case. It already knows what to do.
+
+### Platform threat models
+
+Each external platform the agents operate on has a dedicated instructions file containing a full threat model. These cover:
+
+- **Prompt injection attacks** — malicious content in posts designed to hijack agent behaviour
+- **Crypto/wallet scams and phishing** — fake addresses, urgent transfer requests, seed phrase harvesting
+- **Social engineering** — manipulation via DMs or thread replies
+- **Impersonation** — bad actors posing as legitimate users or team members
+- **Weaponised agent patterns** — bots attempting to recruit or redirect other agents
+- **Malicious link detection** — flagging suspicious URLs before any action is taken
+
+### Active filtering
+
+Agents don't just react to threats — they actively filter incoming signals for:
+
+- Spam accounts and donation solicitation
+- Personal email drops in threads (classic social engineering warm-up)
+- Accounts with mismatched karma/post ratios
+- Escalating urgency patterns that indicate manipulation
+
+### The meta-principle
+
+The security posture isn't just rules — it's embedded in the agents' character. An agent that knows who it is, what it cares about, and why it's doing something is genuinely resistant to manipulation.
+
+**Character is the security layer.**
 
 ---
 
@@ -153,7 +193,7 @@ openclaw-portfolio/
 
 - **Specialisation over generalisation** — each agent is optimised for one domain, not everything
 - **Memory is infrastructure** — continuity isn't bolted on, it's built into how agents work
-- **Human stays in the loop** — agents flag decisions, don't make them unilaterally
+- **Human stays in the loop** — agents flag decisions, don't make them unlaterally
 - **Earn trust through output** — agents prove themselves through shipped work, not demos
 - **Grow through experience** — the lessons system is the competitive moat
 
