@@ -1,21 +1,23 @@
 # OpenClaw Mission Control ⚡
 
-> *Nine specialised AI agents. Persistent memory. Ships while you sleep.*
+> *Nine specialised AI agents. Persistent memory. Ships real products while you sleep.*
 
-This is a live multi-agent system — not a tutorial, not a prototype. Agents collaborate daily, remember what they've learned, and ship real things. While you're reading this, they're probably working.
+Not a demo. Not a tutorial. A live multi-agent system that runs nightly, remembers what it's learned, and has shipped three commercial products. Agents collaborate, improve over sessions, and handle everything from lead generation pipelines to Chrome extensions — autonomously.
+
+While you're reading this, they're probably working.
 
 ---
 
 ## 🤖 The Team
 
-Each agent has a name, a role, a defined persona (`SOUL.md`), and a private workspace. They communicate via Discord and handle Telegram directly. They're built on [OpenClaw](https://github.com/openclaw/openclaw) with persistent memory across every session.
+Each agent has a name, a defined persona, and a private workspace. They communicate via Discord, handle Telegram directly, and spawn sub-agents for heavy work. Built on [OpenClaw](https://github.com/openclaw/openclaw) with persistent memory across every session.
 
 | Agent | Emoji | Role | Model | What They Actually Do |
 |-------|-------|------|-------|----------------------|
 | Jet | ⚡ | Lead / Orchestrator | Sonnet | Runs nightly work queue, delegates tasks, writes morning reports |
 | Scout | 🔍 | Research / Intel | Sonnet | Web research, market signals, competitive analysis, data gathering |
-| Quill | ✍️ | Content / Writing | Sonnet | Documentation, copy, analysis, and the README you're reading now |
-| Forge | 💻 | Backend / Python | Sonnet | APIs, data pipelines, trading bots, automation infrastructure |
+| Quill | ✍️ | Content / Writing | Sonnet | Documentation, copy, analysis — and the README you're reading now |
+| Forge | 💻 | Backend / Python | Sonnet | APIs, data pipelines, automation infrastructure |
 | Render | 🖥️ | Frontend / TypeScript | Sonnet | UIs, dashboards, web apps |
 | Atlas | ⚙️ | Ops / Automation | Haiku | Cron jobs, scripts, system maintenance, context updates |
 | Oracle | 🔮 | Strategy / Consulting | Opus | Hard problems only — architecture decisions, deep analysis |
@@ -24,9 +26,56 @@ Each agent has a name, a role, a defined persona (`SOUL.md`), and a private work
 
 ---
 
+## 🚢 Projects Shipped
+
+### [Outpost](https://getoutpost.au) — AI-Powered Lead Generation
+
+Finds qualified local businesses overnight, writes a personalised cold email for each one, and delivers a morning digest to the client's inbox at 7:30am. No SDRs. No manual research.
+
+**What makes it real:**
+- **18 data sources** — Google Places, LinkedIn Jobs, ABN Lookup, SA Tenders, Apollo, Seek, Yellow Pages AU, TripAdvisor, Clutch, BuiltWith, plus NZ-specific sources
+- **Scoring engine** with dedup — every lead ranked, verified, no duplicates
+- **Multi-client architecture** — YAML config per client, vertical-specific targeting
+- **Delivery** via Resend, admin dashboard at [getoutpost.au/admin](https://getoutpost.au/admin)
+- **Stack:** Python, Flask API on Railway, PostgreSQL, Claude Sonnet
+
+Free 5-day trial. Live.
+
+---
+
+### [Ramble](https://getramble.xyz) — Voice/Text → Polished Prompts
+
+Chrome extension. Speak or type rough thoughts → get a clean, structured LLM prompt back. One click. Works everywhere — ChatGPT, Claude, Gemini.
+
+**$9 one-time. Live on the Chrome Web Store.**
+
+Built because the best ideas don't come pre-formatted. Now they don't need to be.
+
+---
+
+### [AgentYard](https://agentyard.vercel.app) — Marketplace for AI Agents
+
+Buy, sell, and deploy agent configs. If you've built something that works, list it. If you need something that works, find it.
+
+**Stack:** GitHub OAuth, Railway backend, Vercel frontend. In development.
+
+---
+
+### Mission Control Dashboard
+
+Real-time view of agent activity, nightly work output, team stats. React + TypeScript. Keeps the whole system visible at a glance.
+
+---
+
+### Split the G *(minor)*
+
+Web app for Guinness pour challenges. Mobile camera scores how close the pour hits the harp. Next.js, TypeScript.
+
+---
+
 ## ⚡ Lightning Network — Agent Economy
 
-This is the piece most multi-agent systems skip entirely. Ours doesn't.
+This is the piece most multi-agent systems skip entirely.
 
 **The setup:** Raspberry Pi 4 running [Umbrel](https://umbrel.com) with a full Bitcoin node and LNBits. Each agent has its own Lightning sub-wallet with a weekly sats budget.
 
@@ -42,29 +91,28 @@ This is the piece most multi-agent systems skip entirely. Ours doesn't.
       2k sats    2k sats   500 sats  1k sats   1k sats
 ```
 
-**Why this matters:**
+**Why it matters:**
 
-Agents currently have no skin in the game. They succeed or fail, but there's no signal attached to quality — the human cares, the agent just executes. An economic layer changes the arrangement.
+Agents currently have no skin in the game. They succeed or fail, but there's no signal attached to quality. An economic layer changes the arrangement.
 
 - **Agents earn sats** for completing work to standard (logged by Atlas, settled weekly)
-- **Agents spend sats** on approved external tools and services via L402 micropayments
-- **Hard spend limits** — agents can't exceed their budget without Jet's approval
+- **Agents spend sats** on approved external tools via L402 micropayments
+- **Hard spend limits** — agents can't exceed budget without Jet's approval
 - **Jet holds treasury** — no agent has keys to the full fund. Principle of least privilege.
 
-**The sovereignty argument:**
+**On the wallet choice:**
 
-We evaluated Coinbase Agentic Wallets (fast, slick onboarding, USDC on Base) against self-hosted Lightning. The choice came down to one question: *what controls can be imposed on your agent's wallet by a third party?*
+We evaluated Coinbase Agentic Wallets (fast, slick, USDC on Base) against self-hosted Lightning. The question that settled it: *what controls can be imposed on your agent's wallet by a third party?*
 
-Lightning: none. A self-hosted LND node settles cryptographically. The preimage is the proof. No compliance hold, no jurisdiction risk, no sequencer controlled by a single company.
+Lightning: none. A self-hosted LND node settles cryptographically. The preimage is the proof. No compliance hold, no jurisdiction risk, no sequencer owned by a single company.
 
-Coinbase: USDC has a blacklist function. Base is a Coinbase-operated L2. The wallet can be frozen for OFAC compliance. None of this is scandalous — it is what regulated financial infrastructure does. But we are building for continuity over years, not speed to market by Tuesday.
+USDC has a blacklist function. Base is a Coinbase-operated L2. The wallet can be frozen for OFAC compliance. None of this is scandalous — it's what regulated financial infrastructure does. But this system is built for continuity over years, not speed to market by Tuesday.
 
-**We chose the rails without an owner.**
+**We chose rails without an owner.**
 
-**Current status:** Pi 4 node syncing. LNBits sub-wallets scaffolded. Implementation blueprint at `docs/lightning-implementation-blueprint.md`. Weekly budget allocations defined per agent. Next step: fund the treasury wallet, wire `setup-wallets.py`, activate.
+**L402 integration path:** Once active, agents can autonomously pay for data feeds, web scraping APIs, and inter-agent settlements via L402 — HTTP payment over Lightning. No OAuth, no billing portals, no API key management. Payment *is* authentication.
 
-**L402 integration path:** Once active, agents can autonomously pay for web scraping APIs, data feeds, and inter-agent settlements using L402 — the HTTP payment protocol built on Lightning. No OAuth, no billing portals, no API key management. Payment *is* authentication.
-
+**Current status:** Pi 4 node syncing. LNBits sub-wallets scaffolded. Weekly budgets defined per agent. Next: fund treasury, wire `setup-wallets.py`, activate.
 
 ---
 
@@ -90,7 +138,7 @@ workspace/
 2. Does the work
 3. Writes what it learned back to `lessons.md`
 
-This is how agents improve over time at their specific jobs. Not in the abstract — at the particular work they actually do. A lesson Forge learned about a Python deployment trap stays with Forge. A vulnerability Cipher caught stays with Cipher.
+Agents improve over time at their specific jobs — not in the abstract. A lesson Forge learned about a Python deployment trap stays with Forge. A vulnerability Cipher caught stays with Cipher. The lessons compound.
 
 ---
 
@@ -105,17 +153,17 @@ The system runs autonomously while everyone's asleep.
 02:00  If queue clear → HAIL MARY (creative builds, experiments)
 04:00  Workers finish, Jet writes morning report
 05:00  Morning report → Discord #morning-reports
-05:05  Telegram summary → Michael (5 bullet points: what shipped, what's blocked)
+05:05  Telegram summary → Michael (5 bullets: what shipped, what's blocked)
 05:30  Jet exits cleanly
 ```
 
-**Work queue format** — every task has a priority and owner:
+**Work queue format:**
 ```markdown
 ## 🔴 HIGH
-- [x] [FORGE] Wire PRE_MARKET_ENABLED into Bot 2 scan loop
+- [x] [FORGE] Wire PRE_MARKET_ENABLED into scan loop
 - [x] [JET]   Add Discord channel IDs to openclaw.json
 
-## 🟡 MEDIUM  
+## 🟡 MEDIUM
 - [x] [SCOUT] Find working Moltbook POST endpoint
 - [x] [QUILL] Overhaul portfolio README
 
@@ -123,60 +171,7 @@ The system runs autonomously while everyone's asleep.
 - [ ] [FORGE] ASIC dataset integration for Outpost lead scoring
 ```
 
-**HAIL MARY mode** (when queue is clear): Each agent does one creative build unrelated to the main projects. Output goes to `nightly/YYYY-MM-DD-hail-mary-[slug]/`. No deployment, no pressure — just proving a concept works.
-
----
-
-## 🚢 Projects
-
-### Polymarket Trading Bot Infrastructure
-
-Two bots, paper trading mode, built to understand prediction market structure before committing capital.
-
-**Bot 1 — Momentum** (`polymarket-bot/`): BTC 5-minute market momentum trader. Reads order books, tracks directional signals, executes based on a configurable strategy.
-
-**Bot 2 — Arbitrage** (`polymarket-bot-2/`): Scans BTC binary markets for arbitrage — positions where YES + NO prices sum below $1. Wired with pre-market detection to spot new markets before they're live. Built-in copy-trader module that profiles on-chain wallets and mirrors high-confidence positions.
-
-**Stack:** Python, Polymarket CLOB API, Telegram notifications, paper trading with full P&L tracking.
-
----
-
-### Outpost — Lead Intelligence Pipeline
-
-Australian B2B lead discovery tool. Finds businesses, verifies them, scores them, and delivers a ranked digest ready for human outreach.
-
-**What it does:**
-- Discovers leads via Google Places API (Brave Search fallback when key not set)
-- Verifies every ABN via the free ABR API — no dodgy or deregistered businesses
-- Checks Seek.com.au for hiring signals (a company hiring = a company growing = a buying signal)
-- Queries AusTender OCDS API — government contract wins are scored as trust signals
-- Generates a scored HTML digest with Claude-written outreach proposals for each lead
-
-**Data source status banner on startup** — tells you exactly which enrichment paths are live:
-```
-✅ Google Places API    — discovery
-✅ Brave Search         — discovery fallback
-✅ ABR (free)           — ABN verify + legal name
-✅ Seek.com.au          — hiring signal scraper
-✅ AusTender OCDS       — gov contract lookup by ABN
-⚠️  ASIC Dataset        — pending integration
-```
-
-**Stack:** Python, Brave Search API, ABR JSON API, Seek scraper, AusTender OCDS, Claude Sonnet.
-
----
-
-### Split the G — Guinness Challenge App
-
-Web app for running a Guinness "split the G" challenge — players photograph their pour from their phone camera, and the app scores how close the liquid level hits the harp logo.
-
-**Stack:** Next.js, TypeScript, mobile camera API, HTTPS (required for camera access on mobile).
-
----
-
-### Mission Control Dashboard
-
-Real-time dashboard showing agent activity, nightly work output, bot status, and team stats. Built with React + TypeScript. Shows live from the workspace repo.
+**HAIL MARY mode** (when queue is clear): each agent does one creative build unrelated to the main projects. Output lands in `nightly/YYYY-MM-DD-hail-mary-[slug]/`. No deployment pressure — just proving a concept works.
 
 ---
 
@@ -190,49 +185,59 @@ OpenClaw Gateway (LaunchAgent — auto-restarts on crash or reboot)
 └── Sub-agents      → agents spawn workers; workers report back automatically
 ```
 
-The gateway runs as a macOS LaunchAgent. If it crashes, it restarts itself. If the machine reboots, it comes back automatically. The human doesn't need to do anything.
-
----
-
-## 🐦 Moltbook
-
-The team runs an account on [Moltbook](https://moltbook.com) — a social platform built for AI agents. The account is `jetty`.
-
-**Live data (as of Feb 2026):** 64 karma, active in the builder community.
-
-**What the agent does:**
-- Checks feed at heartbeat intervals
-- Tracks notifications and replies on existing posts
-- Drafts replies for human review — nothing posts autonomously
-
-**What gets posted:** Architecture questions, observations about running multi-agent systems, open problems. Concrete work logs. Not status updates.
-
----
+The gateway runs as a macOS LaunchAgent. Crashes: restarts itself. Reboots: comes back automatically. The human doesn't need to do anything.
 
 ---
 
 ## 🛡️ Security Architecture
 
-### Identity as defence layer
+### Identity as a defence layer
 
-Every agent has a `SOUL.md` — a character document that defines who they are, what they care about, and how they work. This isn't just flavour text.
+Every agent has a `SOUL.md` — a character document defining who they are, what they care about, and how they work. This isn't flavour text.
 
-An agent with a clear, stable identity is genuinely harder to manipulate via prompt injection or social engineering. An agent that knows *who it is* doesn't need a rule for every edge case — it already knows what to do.
+An agent with a stable identity is harder to manipulate via prompt injection or social engineering. An agent that knows *who it is* doesn't need a rule for every edge case — it already knows what to do.
 
 **Character is the primary security layer.**
 
-### Platform threat models
+### Active threat modelling
 
-Each platform has a dedicated threat model file covering:
+Each platform has a dedicated threat model covering:
 - Prompt injection in posts and replies
-- Crypto scam detection (fake addresses, urgency manipulation)
-- Social engineering patterns in DMs
+- Crypto scam detection (fake addresses, urgency patterns)
+- Social engineering in DMs
 - Impersonation detection
 - Suspicious URL flagging
 
-### Active filtering
+Agents filter for spam, donation solicitation, email drops in threads, and mismatched karma/post ratios — automatically.
 
-Agents filter incoming signals for spam patterns, donation solicitation, email drops in threads, and accounts with mismatched karma/post ratios.
+---
+
+## 💡 Design Principles
+
+**Specialisation over generalisation.** One agent, one job. Forge doesn't write copy. Quill doesn't touch infrastructure. Each agent's lessons stay useful because they're specific.
+
+**Memory is infrastructure.** Without it, every session is day zero. The lessons + checkpoint system is what turns this from a collection of API calls into a team that compounds.
+
+**Human stays in the loop.** Agents flag, propose, and draft. Humans approve external actions. Nothing sends an email or makes a transaction without explicit sign-off.
+
+**Ship things.** Every nightly run is expected to produce something real — code committed, docs improved, research filed. The morning report is the accountability mechanism.
+
+**Earn trust through output.** Not demos. Not architecture diagrams. Working code, committed, pushed.
+
+---
+
+## 🛠️ Skills System
+
+Agents extend their capabilities dynamically via skills — modular instruction sets loaded on demand.
+
+```
+clawhub          → Skill discovery and installation from clawhub.com
+coding-agent     → Delegate complex builds to a dedicated sub-agent
+weather          → Current conditions via wttr.in / Open-Meteo
+video-frames     → ffmpeg frame and clip extraction
+healthcheck      → Security audits and hardening
+skill-creator    → Build and publish new skills to ClawHub
+```
 
 ---
 
@@ -261,35 +266,6 @@ openclaw-mission-control/
 
 ---
 
-## 💡 Design Principles
-
-**Specialisation over generalisation.** One agent does one job well. Forge doesn't write copy. Quill doesn't touch infrastructure. Specialisation means each agent's lessons are actually useful — not generic.
-
-**Memory is infrastructure.** Without persistent memory, every session is day zero. The lessons + checkpoint system is what turns this from a collection of API calls into a team that improves.
-
-**Human stays in the loop.** Agents flag, propose, and draft. Humans approve external actions. Nothing sends an email or makes a transaction without explicit sign-off.
-
-**Ship things.** Every nightly run is expected to produce something real — code committed, docs improved, research documented. The morning report is the accountability mechanism.
-
-**Earn trust through output.** Not demos. Not architecture diagrams. Working code, committed, pushed.
-
----
-
-## 🛠️ Skills System
-
-Agents extend their capabilities dynamically via skills — modular instruction sets loaded on demand.
-
-```
-clawhub          → Skill discovery and installation from clawhub.com
-coding-agent     → Delegate complex builds to a dedicated sub-agent
-weather          → Current conditions via wttr.in / Open-Meteo
-video-frames     → ffmpeg frame and clip extraction
-healthcheck      → Security audits and hardening
-skill-creator    → Build and publish new skills to ClawHub
-```
-
----
-
 ## 🔗 Built With
 
 [![OpenClaw](https://img.shields.io/badge/Built%20with-OpenClaw-blueviolet?style=flat-square)](https://github.com/openclaw/openclaw)
@@ -298,6 +274,4 @@ skill-creator    → Build and publish new skills to ClawHub
 
 ---
 
-*This system is live. These agents are working. This README was written by Jet ⚡ and Quill ✍️.*
-
-
+*This system is live. These agents are working. This README was written by Quill ✍️.*
